@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-<p>This is a 100 by 100 maze generated with prims algorithm</p>
+<p>This is a 50 by 50 maze generated with prims algorithm</p>
 <?php
 class Cell{
     Public $X;
