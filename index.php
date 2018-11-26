@@ -1,4 +1,5 @@
 <?php
+
 class Cell{
     Public $X;
     Public $Y;
@@ -10,14 +11,19 @@ class Cell{
         $this->Y = $yPos;
     }
 
+    //makes the cell a wall
     function makeWall(){
         $this->isWall = TRUE;
     }
 
+    //makes the cell a path
     function makePath(){
         $this->isWall = FALSE;
     }
 
+    /*returns how many cells this cell divides
+    *takes in an array to check cell in
+    */
     function DividesHowMany($cellsArray){
         $positions = array(
             New Cell($this->X, $this->Y + 1),
@@ -39,6 +45,7 @@ class Cell{
         return $counter;
     }
 
+    //sets the id of the cell to the $n formal parameter
     function setId($n){
         $this->id = $n;
     }
@@ -57,6 +64,7 @@ class Grid{
         $this->Height = $height;
     }
 
+    //fills the grid with walls
     function fillWithWalls(){
         for($i = 0; $i <= $this->Height; $i++){
             array_push($this->Cells, array());
@@ -68,6 +76,7 @@ class Grid{
         }
     }    
 
+    //gets the neigbours of a given cell
     function getNeighbours($c){
         $n = array();
         $positions = array(
@@ -85,6 +94,7 @@ class Grid{
         return $n;
     }
 
+    //returns a random wall from the walls array
     function getRandomWall(){
         $randIndex = rand(0, count($this->Walls)-1);
         return array($this->Walls[$randIndex], $randIndex);
@@ -93,6 +103,8 @@ class Grid{
 ?>
 
 <?php 
+//https://en.wikipedia.org/wiki/Maze_generation_algorithm : see randomized prims algorithm
+//removes a value at an index from a list 
 function remove(&$a, $index){
     $temp = array();
     unset($a[$index]);
@@ -102,34 +114,34 @@ function remove(&$a, $index){
 ?>
 <?php 
 
-$myGrid = new Grid(50,50);
-$myGrid->fillWithWalls();
-$randomX = rand(0,$myGrid->Height);
+$myGrid = new Grid(50,50); 
+$myGrid->fillWithWalls(); // start with a grid full of walls
+$randomX = rand(0,$myGrid->Height); 
 $randomY = rand(0,$myGrid->Width);
-$myGrid->Cells[$randomX][$randomY]->makePath();
+$myGrid->Cells[$randomX][$randomY]->makePath(); //pick a cell 
 
-$neib = $myGrid->getNeighbours($myGrid->Cells[$randomX][$randomY]);
+$neib = $myGrid->getNeighbours($myGrid->Cells[$randomX][$randomY]); //get the neigbours of the cell
 
-foreach($neib as &$c){
-    array_push($myGrid->Walls, $c);
+foreach($neib as &$c){ //add the neigbours of the cell to the wall list
+    array_push($myGrid->Walls, $c); 
 }
 unset($c);
 $cellNumber = 0;
 while (count($myGrid->Walls) > 0){
-    $thisWall = $myGrid->getRandomWall();
-    if($thisWall[0]->DividesHowMany($myGrid->Cells) == 1){
-        $myGrid->Cells[$thisWall[0]->X][$thisWall[0]->Y]->makePath();
+    $thisWall = $myGrid->getRandomWall(); //pick a random wall from the list
+    if($thisWall[0]->DividesHowMany($myGrid->Cells) == 1){ //if only one of the two cells the wall divides is visited
+        $myGrid->Cells[$thisWall[0]->X][$thisWall[0]->Y]->makePath(); //make the wall a path 
         $myGrid->Cells[$thisWall[0]->X][$thisWall[0]->Y]->setId($cellNumber);
         $cellNumber++;
         $walls = $myGrid->getNeighbours($myGrid->Cells[$thisWall[0]->X][$thisWall[0]->Y]);
-        foreach($walls as &$c){
+        foreach($walls as &$c){ //add the neigbouring walls of the cell to the wall list 
             array_push($myGrid->Walls, $c);
         }
         unset($c);
         
 
     }
-    remove($myGrid->Walls,$thisWall[1]);
+    remove($myGrid->Walls,$thisWall[1]); //remove the wall from the list
 }
 
 
@@ -138,7 +150,8 @@ while (count($myGrid->Walls) > 0){
 <html>
 <head>
 <style>
-    .Invisible{
+    /* class that animates the rectangle to be visible from inveisible */
+    .Visible{
         -webkit-animation-fill-mode: forwards; /* Chrome 16+, Safari 4+ */
         -moz-animation-fill-mode: forwards;    /* FF 5+ */
         -o-animation-fill-mode: forwards;      /* Not implemented yet */
@@ -165,6 +178,7 @@ while (count($myGrid->Walls) > 0){
     }
 </style>
 <script>
+            //called when the svg is clicked it starts the animation that shows cells becoming paths 
             function animateThatStuff() {
                 let max = <?php echo (string)$cellNumber; ?>;
                 for(let i = 0; i < max; i++){
@@ -176,7 +190,7 @@ while (count($myGrid->Walls) > 0){
                 for(let i = 0; i < max; i++){
                     let y = document.getElementsByClassName(i.toString());
                     y[0].style.animationDelay = (i/10).toString().concat("s");
-                    y[0].classList.add("Invisible");
+                    y[0].classList.add("Visible");
                 }  
                
             };
@@ -192,6 +206,7 @@ while (count($myGrid->Walls) > 0){
 
 
 <?php 
+    //generates svg from the List of cells in the Grid
     echo "<svg onclick=\"animateThatStuff()\" width=\"". (string)(15 *  $myGrid->Width) . "\"";
     echo " height=\"". (string)(15 *  $myGrid->Height) . "\">";
     for($i = 0; $i <= $myGrid->Height; $i++){
