@@ -207,8 +207,8 @@ while (count($myGrid->Walls) > 0){
 
 <?php 
     //generates svg from the List of cells in the Grid
-    echo "<svg onclick=\"animateThatStuff()\" width=\"". (string)(15 *  $myGrid->Width) . "\"";
-    echo " height=\"". (string)(15 *  $myGrid->Height) . "\">";
+    echo "<svg onclick=\"animateThatStuff()\" width=\"". (string)(16 *  $myGrid->Width) . "\"";
+    echo " height=\"". (string)(16 *  $myGrid->Height) . "\">";
     for($i = 0; $i <= $myGrid->Height; $i++){
         for($j = 0; $j <= $myGrid->Height; $j++){   
             echo "<rect width=\"15\" height=\"15\"";
