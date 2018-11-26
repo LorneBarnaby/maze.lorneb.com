@@ -219,7 +219,6 @@ while (count($myGrid->Walls) > 0){
                 echo " class=\"" . (string)$myGrid->Cells[$i][$j]->id . "\"";
             } else {
                 echo " fill=\"white\"";
-                echo " class=\"white\"";
             }
             echo "/>";
         }
