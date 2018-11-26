@@ -134,13 +134,13 @@ while (count($myGrid->Walls) > 0){
 
 
 <?php 
-    echo "<svg width=\"". (string)(19 *  $myGrid->Width) . "\"";
-    echo " height=\"". (string)(19 *  $myGrid->Height) . "\">";
+    echo "<svg width=\"". (string)(15 *  $myGrid->Width) . "\"";
+    echo " height=\"". (string)(15 *  $myGrid->Height) . "\">";
     for($i = 0; $i <= $myGrid->Height; $i++){
         for($j = 0; $j <= $myGrid->Height; $j++){   
             echo "<rect width=\"15\" height=\"15\"";
-            echo " x=\"" . (string)(($j + $j * 15) - 1) . "\"";
-            echo " y=\"" . (string)(($i + $i * 15) - 1). "\"";
+            echo " x=\"" . (string)(($j * 15) - 1) . "\"";
+            echo " y=\"" . (string)(($i * 15) - 1). "\"";
             if($myGrid->Cells[$i][$j]->isWall == FALSE){
                 echo " fill=\"black\"";
             } else {
