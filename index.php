@@ -103,7 +103,7 @@ class Grid{
 ?>
 
 <?php 
-//https://en.wikipedia.org/wiki/Maze_generation_algorithm : see randomized prims algorithm
+
 //removes a value at an index from a list 
 function remove(&$a, $index){
     $temp = array();
@@ -113,7 +113,7 @@ function remove(&$a, $index){
 }
 ?>
 <?php 
-
+//https://en.wikipedia.org/wiki/Maze_generation_algorithm : see randomized prims algorithm
 $myGrid = new Grid(50,50); 
 $myGrid->fillWithWalls(); // start with a grid full of walls
 $randomX = rand(0,$myGrid->Height); 
